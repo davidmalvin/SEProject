@@ -52,15 +52,32 @@ public class RechercheFilm {
 
     public String retrouve(String requete) {
         
-
-
         myRequest.put("TITRE", "SELECT id_film FROM recherche_titre WHERE titre match \"%s\"");
+        myRequest.put("Titre", "SELECT id_film FROM recherche_titre WHERE titre match \"%s\"");
+        myRequest.put("titre", "SELECT id_film FROM recherche_titre WHERE titre match \"%s\"");
+        myRequest.put("TiTre", "SELECT id_film FROM recherche_titre WHERE titre match \"%s\"");
         myRequest.put("DE", "SELECT id_film FROM generique join personnes ON generique.id_personne = personnes.id_personne WHERE ((personnes.prenom like '%%'||\"%s\"||'%%' AND personnes.nom like '%%'||\"%s\"||'%%') OR (personnes.prenom like '%%'||\"%s\"||'%%' AND personnes.nom like '%%'||\"%s\"||'%%')) AND generique.role like 'R'");
+        myRequest.put("de", "SELECT id_film FROM generique join personnes ON generique.id_personne = personnes.id_personne WHERE ((personnes.prenom like '%%'||\"%s\"||'%%' AND personnes.nom like '%%'||\"%s\"||'%%') OR (personnes.prenom like '%%'||\"%s\"||'%%' AND personnes.nom like '%%'||\"%s\"||'%%')) AND generique.role like 'R'");
+        myRequest.put("De", "SELECT id_film FROM generique join personnes ON generique.id_personne = personnes.id_personne WHERE ((personnes.prenom like '%%'||\"%s\"||'%%' AND personnes.nom like '%%'||\"%s\"||'%%') OR (personnes.prenom like '%%'||\"%s\"||'%%' AND personnes.nom like '%%'||\"%s\"||'%%')) AND generique.role like 'R'");
+        myRequest.put("dE", "SELECT id_film FROM generique join personnes ON generique.id_personne = personnes.id_personne WHERE ((personnes.prenom like '%%'||\"%s\"||'%%' AND personnes.nom like '%%'||\"%s\"||'%%') OR (personnes.prenom like '%%'||\"%s\"||'%%' AND personnes.nom like '%%'||\"%s\"||'%%')) AND generique.role like 'R'");
         myRequest.put("AVEC", "SELECT id_film FROM generique join personnes ON generique.id_personne = personnes.id_personne WHERE ((personnes.prenom like  \"%s\" AND personnes.nom like '%%'||\"%s\"||'%%') OR (personnes.prenom like '%%'||\"%s\"||'%%' AND personnes.nom like '%%'||\"%s\"||'%%')) AND generique.role like 'A'");
+        myRequest.put("Avec", "SELECT id_film FROM generique join personnes ON generique.id_personne = personnes.id_personne WHERE ((personnes.prenom like  \"%s\" AND personnes.nom like '%%'||\"%s\"||'%%') OR (personnes.prenom like '%%'||\"%s\"||'%%' AND personnes.nom like '%%'||\"%s\"||'%%')) AND generique.role like 'A'");
+        myRequest.put("avec", "SELECT id_film FROM generique join personnes ON generique.id_personne = personnes.id_personne WHERE ((personnes.prenom like  \"%s\" AND personnes.nom like '%%'||\"%s\"||'%%') OR (personnes.prenom like '%%'||\"%s\"||'%%' AND personnes.nom like '%%'||\"%s\"||'%%')) AND generique.role like 'A'");
         myRequest.put("PAYS", "SELECT id_film FROM films join pays ON films.pays = pays.code WHERE pays.nom like '%%'||\"%s\"||'%%' OR pays.code like \"%s\"");
+        myRequest.put("pays", "SELECT id_film FROM films join pays ON films.pays = pays.code WHERE pays.nom like '%%'||\"%s\"||'%%' OR pays.code like \"%s\"");
+        myRequest.put("Pays", "SELECT id_film FROM films join pays ON films.pays = pays.code WHERE pays.nom like '%%'||\"%s\"||'%%' OR pays.code like \"%s\"");
         myRequest.put("EN", "SELECT id_film FROM films WHERE films.annee = %s");
+        myRequest.put("en", "SELECT id_film FROM films WHERE films.annee = %s");
+        myRequest.put("En", "SELECT id_film FROM films WHERE films.annee = %s");
+        myRequest.put("eN", "SELECT id_film FROM films WHERE films.annee = %s");
         myRequest.put("AVANT", "SELECT id_film FROM films WHERE films.annee < %s");
+        myRequest.put("avant", "SELECT id_film FROM films WHERE films.annee < %s");
+        myRequest.put("Avant", "SELECT id_film FROM films WHERE films.annee < %s");
         myRequest.put("APRES", "SELECT id_film FROM films WHERE films.annee > %s");
+        myRequest.put("apres", "SELECT id_film FROM films WHERE films.annee > %s");
+        myRequest.put("Apres", "SELECT id_film FROM films WHERE films.annee > %s");
+
+        
         StringBuilder sb = new StringBuilder("WITH filtre AS ( ");
         for (String s : requestToSQL(requete)) {
             sb.append(s);
@@ -191,11 +208,11 @@ public class RechercheFilm {
 
 
 
-    private ArrayList<String> verifTitre(ArrayList<String> al, String s) {
+    private ArrayList<String> verifTitre(ArrayList<String> lp, String s) {
 
         if (s.equals("TITRE")) {
             StringBuilder sb = new StringBuilder();
-            for (String st : al) {
+            for (String st : lp) {
                 sb.append(st).append(" ");
             }
             ArrayList<String> ret = new ArrayList<>();
@@ -203,17 +220,17 @@ public class RechercheFilm {
             return ret;
         }
          else if (s.equals("PAYS")) {
-            al.add(al.get(0));
+            lp.add(lp.get(0));
         }
         else if (s.equals("AVEC") || s.equals("DE")) {
-            al.add(al.get(1));
-            al.add(al.get(0));
+            lp.add(lp.get(1));
+            lp.add(lp.get(0));
         }
-        return al;
+        return lp;
     }
 }
 /**
- * @param al -> keywords of what you are looking for and refine search results.
+ * @param lp -> keywords of what you are looking for and refine search results.
  * @return  ArrayList
  * You have to write proprely and correctly the file.
  */
